@@ -1,5 +1,13 @@
 #! python
 
+# Need to try using a cluster based approach.  Use both consensus and reference OTU sequence distance from a seed sequence.
+# From here generate distance of files of interest also based on consensus and reference OTU sequences.
+# Track which OTU these test set files lie closest to and then assign new OTUs
+	# Need to get the consensus file for the testset.OTUrep.fasta
+	# Need to get a seed sequence (although this can be any sequence)
+	# Need to rewrite code accordingly
+
+	
 #MergebyConsensusShared.py
 
 ## Example command line entry:
