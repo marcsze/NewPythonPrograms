@@ -124,7 +124,29 @@ def makeRefFile(OTURefFasta):
 	
 	return OTUSequences
 
-
+def getRefOTUSimScores(CenterSequence, OTUSequences):
+	RefOTUSim = {}
+	for i in OTUSequences:
+		sequence = OTUSequences[i]
+		total = 0
+		match = 0
+		matchLength = 1
+		for j, nucleotide in enumerate(sequence):
+			if nucleotide == CenterSequence[j]:
+				match = match + 1
+				total = total + 1
+			else:
+				total = total + 1
+			
+			if matchLength == 300:
+				break
+		
+			matchLength = matchLength + 1
+		
+		RefOTUSim[i] = 100 - ((match/total)*100)
+	
+	return RefOTUSim
+		
 	
 	
 def main():
@@ -133,9 +155,10 @@ def main():
 	TestOTUsequences, TestSequenceCount = createArrays(OTUTestFasta, countsFile)
 	CenterSequence = getCenteringSequence(TestOTUsequences)
 	OTUSequences = makeRefFile(OTURefFasta)
+	RefOTUSim = getRefOTUSimScores(CenterSequence, OTUSequences)
 	print(len(OTUSequences))
-	print(len(CenterSequence))
-	print(len(TestOTUsequences))
+	print(RefOTUSim)
+
 
 	
 	
