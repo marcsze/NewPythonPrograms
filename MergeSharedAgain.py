@@ -154,17 +154,20 @@ def main():
 	OTUTestFasta, countsFile, OTURefFasta, outputFile = commandLine()
 	TestOTUsequences, TestSequenceCount = createArrays(OTUTestFasta, countsFile)
 	OTUSequences = makeRefFile(OTURefFasta)
-	# Generate Information for first axis
+	# Generate Information for first axis Reference
 	CenterSequence = getCenteringSequence(TestOTUsequences)
 	RefOTUSim = getRefOTUSimScores(CenterSequence, OTUSequences)
-	# Generate Information for second axis
+	# Generate Information for second axis Reference
 	CenterSequence2 = getCenteringSequence(TestOTUsequences)
-	RefOTUSim2 = getRefOTUSimScores(CenterSequence, OTUSequences)
-	
-	
+	RefOTUSim2 = getRefOTUSimScores(CenterSequence2, OTUSequences)
+	# Generate Information for first axis Test Set
+	TestOTUSim = getRefOTUSimScores(CenterSequence, TestOTUsequences)
+	# Generate Information for second axis Test Set
+	TestOTUSim2 = getRefOTUSimScores(CenterSequence2, TestOTUsequences)
+		
 	print(len(OTUSequences))
-	print(len(RefOTUSim))
-	print(len(RefOTUSim2))
+	print(len(TestOTUSim))
+	print(len(TestOTUSim2))
 
 	
 	
