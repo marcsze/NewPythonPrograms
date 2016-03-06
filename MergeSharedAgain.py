@@ -101,15 +101,41 @@ def getCenteringSequence(TestOTUsequences):
 
 	return(CenterSequence)
 	
+def makeRefFile(OTURefFasta):
+	# Create a reference with the representative sequence
+	reference = open(OTURefFasta, 'r')
+	x = 1
+	refSequence = []
+	otuID = []
+	for line in reference:
+		if x%2 == 0:
+			refSequence.append(line)
+		else:
+			otuID.append(line[1:])			
+			refSequence = refSequence
+		x = x + 1
+	reference.close()
 
+	OTUSequences = {}
+	for i in range(len(otuID)):
+		name = otuID[i]
+		name = name.strip('\n')
+		OTUSequences[name] = refSequence[i]
+	
+	return OTUSequences
+
+
+	
 	
 def main():
 	# Need to create a way to judge accuarcy of calls
 	OTUTestFasta, countsFile, OTURefFasta, outputFile = commandLine()
 	TestOTUsequences, TestSequenceCount = createArrays(OTUTestFasta, countsFile)
 	CenterSequence = getCenteringSequence(TestOTUsequences)
-	
-	
+	OTUSequences = makeRefFile(OTURefFasta)
+	print(len(OTUSequences))
+	print(len(CenterSequence))
+	print(len(TestOTUsequences))
 
 	
 	
