@@ -153,12 +153,18 @@ def main():
 	# Need to create a way to judge accuarcy of calls
 	OTUTestFasta, countsFile, OTURefFasta, outputFile = commandLine()
 	TestOTUsequences, TestSequenceCount = createArrays(OTUTestFasta, countsFile)
-	CenterSequence = getCenteringSequence(TestOTUsequences)
 	OTUSequences = makeRefFile(OTURefFasta)
+	# Generate Information for first axis
+	CenterSequence = getCenteringSequence(TestOTUsequences)
 	RefOTUSim = getRefOTUSimScores(CenterSequence, OTUSequences)
+	# Generate Information for second axis
+	CenterSequence2 = getCenteringSequence(TestOTUsequences)
+	RefOTUSim2 = getRefOTUSimScores(CenterSequence, OTUSequences)
+	
+	
 	print(len(OTUSequences))
-	print(RefOTUSim)
-
+	print(len(RefOTUSim))
+	print(len(RefOTUSim2))
 
 	
 	
