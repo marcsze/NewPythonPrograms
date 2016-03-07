@@ -159,9 +159,8 @@ def getRefOTUSimScores(CenterSequence, OTUSequences):
 	
 def findTotalDifference(TestOTUSim, TestOTUSim2, RefOTUSim, RefOTUSim2):
 	tempDictionary = {}
-	minDifference = 100
 	for i in TestOTUSim:
-		
+		minDifference = 100
 		TestScore = TestOTUSim[i]
 		for j in RefOTUSim:
 	
@@ -199,7 +198,7 @@ def main():
 	# Find the cumilative difference between the two axes
 	tempDictionary = findTotalDifference(TestOTUSim, TestOTUSim2, RefOTUSim, RefOTUSim2)
 	
-	print(tempDictionary)
+	print(len(tempDictionary))
 	
 
 	
