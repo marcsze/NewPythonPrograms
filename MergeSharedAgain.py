@@ -11,7 +11,8 @@
 #MergebyConsensusShared.py
 
 ## Example command line entry:
-## python MergeSharedAgain.py testset.OTUrep.fasta testset.count_table clusterSetSeqList.fasta output.txt
+## python MergeSharedAgain.py testset.OTUrep.fasta testset.count_table clusterSetSeqList.fasta consensus.fasta output.txt
+
 # Load the needed modules for the program
 import sys, random
 
@@ -22,9 +23,10 @@ def commandLine():
 	OTUTestFasta = commands[1]
 	countsFile = commands[2]
 	OTURefFasta = commands[3]
-	outputFile = commands[4]
+	OTUdataFile = commands[4]
+	outputFile = commands[5]
 		
-	return OTUTestFasta, countsFile, OTURefFasta, outputFile
+	return OTUTestFasta, countsFile, OTURefFasta, OTUdataFile, outputFile
 	
 	
 def createArrays(OTUTestFasta, countsFile):
@@ -101,26 +103,33 @@ def getCenteringSequence(TestOTUsequences):
 
 	return(CenterSequence)
 	
-def makeRefFile(OTURefFasta):
+def makeRefFile(OTURefFasta, OTUdataFile):
 	# Create a reference with the representative sequence
+	OTUIDrefernce = open(OTUdataFile, 'r')
+	otuID = []
+	x = 2
+	for line in OTUIDrefernce:
+		if x%2 == 0:
+			otu = line[1:]
+			otuID.append(otu.strip('\n'))
+		x = x + 1
+	OTUIDrefernce.close()
+	
+	
 	reference = open(OTURefFasta, 'r')
 	x = 1
 	refSequence = []
-	otuID = []
 	for line in reference:
 		if x%2 == 0:
-			refSequence.append(line)
+			refSequence.append(line.strip('\n'))
 		else:
-			otuID.append(line[1:])			
 			refSequence = refSequence
 		x = x + 1
 	reference.close()
 
 	OTUSequences = {}
 	for i in range(len(otuID)):
-		name = otuID[i]
-		name = name.strip('\n')
-		OTUSequences[name] = refSequence[i]
+		OTUSequences[otuID[i]] = refSequence[i]
 	
 	return OTUSequences
 
@@ -173,9 +182,9 @@ def findTotalDifference(TestOTUSim, TestOTUSim2, RefOTUSim, RefOTUSim2):
 	
 def main():
 	# Need to create a way to judge accuarcy of calls
-	OTUTestFasta, countsFile, OTURefFasta, outputFile = commandLine()
+	OTUTestFasta, countsFile, OTURefFasta, OTUdataFile, outputFile = commandLine()
 	TestOTUsequences, TestSequenceCount = createArrays(OTUTestFasta, countsFile)
-	OTUSequences = makeRefFile(OTURefFasta)
+	OTUSequences = makeRefFile(OTURefFasta, OTUdataFile)
 	# Generate Information for first axis Reference
 	CenterSequence = getCenteringSequence(TestOTUsequences)
 	RefOTUSim = getRefOTUSimScores(CenterSequence, OTUSequences)
@@ -190,7 +199,7 @@ def main():
 	# Find the cumilative difference between the two axes
 	tempDictionary = findTotalDifference(TestOTUSim, TestOTUSim2, RefOTUSim, RefOTUSim2)
 	
-	print(OTUSequences)
+	print(tempDictionary)
 	
 
 	
