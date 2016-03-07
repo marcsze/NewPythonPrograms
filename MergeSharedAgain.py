@@ -148,6 +148,28 @@ def getRefOTUSimScores(CenterSequence, OTUSequences):
 	return RefOTUSim
 		
 	
+def findTotalDifference(TestOTUSim, TestOTUSim2, RefOTUSim, RefOTUSim2):
+	tempDictionary = {}
+	minDifference = 100
+	for i in TestOTUSim:
+		
+		TestScore = TestOTUSim[i]
+		for j in RefOTUSim:
+	
+			RefScore = RefOTUSim[j]
+			tempDifference = abs(TestScore-RefScore)
+			TestScore2 = TestOTUSim2[i]
+			RefScore2 = RefOTUSim2[j]
+			tempDifference2 = abs(TestScore2-RefScore2)
+			TotalDifference = tempDifference + tempDifference2
+			if TotalDifference < minDifference:
+				tempDictionary[i] = j
+				minDifference = TotalDifference
+			else:
+				tempDictionary = tempDictionary
+			
+	return tempDictionary		
+	
 	
 def main():
 	# Need to create a way to judge accuarcy of calls
@@ -164,10 +186,12 @@ def main():
 	TestOTUSim = getRefOTUSimScores(CenterSequence, TestOTUsequences)
 	# Generate Information for second axis Test Set
 	TestOTUSim2 = getRefOTUSimScores(CenterSequence2, TestOTUsequences)
-		
-	print(len(OTUSequences))
-	print(len(TestOTUSim))
-	print(len(TestOTUSim2))
+	
+	# Find the cumilative difference between the two axes
+	tempDictionary = findTotalDifference(TestOTUSim, TestOTUSim2, RefOTUSim, RefOTUSim2)
+	
+	print(OTUSequences)
+	
 
 	
 	
