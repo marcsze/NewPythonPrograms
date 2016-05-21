@@ -15,16 +15,32 @@ def commandLine():
 	commands = sys.argv
 	textToConvert = commands[1]
 	pattern = commands[2]
-	return textToConvert, pattern
+	mappingFile = commands[3]
+	return textToConvert, pattern, mappingFile
 
-
+# Read in test data as a dictionary to modify file as needed
+def readTestFile(mappingFile):
+	data = open(mappingFile, 'r')
+	testDict = {}
+	x = 0
+	for line in data:
+		if x != 0:
+			try:
+				sampleID, barcode, linker, group = line.split("\t")
+				testDict[group.strip('\n')] = sampleID
+			except ValueError:
+				print("Group was blank moving on to next sample")
+		x = x + 1
+	return testDict
 
 
 def main():
 	# Need to change this so that existing commandLine is what is read.
-	textToConvert, pattern  = commandLine()
+	textToConvert, pattern, mappingFile  = commandLine()
 	dataList = readData(textToConvert)
 	goodData = identifySamples(dataList, pattern)
-	print(goodData)
+	testDict = readTestFile(mappingFile)
+	
+	print(testDict)
 	
 if __name__ == '__main__': main()
