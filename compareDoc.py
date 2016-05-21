@@ -19,17 +19,16 @@ def commandLine():
 	return textToConvert, pattern, mappingFile
 
 # Read in test data as a dictionary to modify file as needed
-def readTestFile(mappingFile):
+def readTestFile(mappingFile, pattern):
 	data = open(mappingFile, 'r')
 	testDict = {}
 	x = 0
 	for line in data:
 		if x != 0:
-			try:
-				sampleID, barcode, linker, group = line.split("\t")
+			sampleID, barcode, linker, group = line.split("\t")
+			if pattern in group:
 				testDict[group.strip('\n')] = sampleID
-			except ValueError:
-				print("Group was blank moving on to next sample")
+
 		x = x + 1
 	return testDict
 
@@ -39,7 +38,7 @@ def main():
 	textToConvert, pattern, mappingFile  = commandLine()
 	dataList = readData(textToConvert)
 	goodData = identifySamples(dataList, pattern)
-	testDict = readTestFile(mappingFile)
+	testDict = readTestFile(mappingFile, pattern)
 	
 	print(testDict)
 	
