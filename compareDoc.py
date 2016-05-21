@@ -32,6 +32,20 @@ def readTestFile(mappingFile, pattern):
 		x = x + 1
 	return testDict
 
+# Make the comparison between the data and test data
+def compareData(dataList, testDict):
+	noMatchList = []
+	YESMatchDict = {}
+	for i, group in enumerate(dataList):
+		try:
+			sample = testDict[group]
+			YESMatchDict[group] = sample
+		except KeyError:
+			noMatchList.append(group)
+	return YESMatchDict, noMatchList
+	
+	
+	
 
 def main():
 	# Need to change this so that existing commandLine is what is read.
@@ -39,7 +53,7 @@ def main():
 	dataList = readData(textToConvert)
 	goodData = identifySamples(dataList, pattern)
 	testDict = readTestFile(mappingFile, pattern)
+	YESMatchDict, noMatchList = compareData(dataList, testDict)
 	
-	print(testDict)
-	
+	print(YESMatchDict)
 if __name__ == '__main__': main()
